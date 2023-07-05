@@ -7,16 +7,17 @@ import {
     Text,
     Keyboard,
     FlatList,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    SafeAreaView
 } from 'react-native';
 import Note from '../components/Note';
 import NotFound from '../components/NotFound';
 import RoundIconBtn from '../components/RoundIconBtn';
+import NoteInputModal from '../components/NoteInputModal';
 
 import colors from '../misc/colors';
 import { useNotes } from '../context/NoteProvider';
-import NoteInputModal from '../components/NoteInputModal';
-import { SearchBar } from 'react-native-screens';
+import SearchBar from '../components/SearchBar';
 
 const reverseData = data => {
     return data.sort((a, b)=> {
@@ -55,7 +56,8 @@ const NoteScreen = ({ user, navigation }) => {
         await AsyncStorage.setItem('notes', JSON.stringify(updatedNotes));
     }
 
-    const openNote =(note) => {
+    const openNote = note => {
+        console.log("내용 : " + note);
         navigation.navigate('NoteDetail', { note });
     }
     
@@ -87,12 +89,12 @@ const NoteScreen = ({ user, navigation }) => {
     }
      
     return (
-        <>
+        <SafeAreaView style={styles.container}>
            <StatusBar barStyle="dark-content" backgroundColor={colors.LIGHT} />
            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                <View style={styles.container}>
-                  <Text>
-                    {user.name}님이 {greet}에 쓰심.  
+                  <Text style={styles.greet}>
+                    {user.name}님, {greet}입니다. 반갑습니다.  
                   </Text> 
                {notes.length ? (
                   <SearchBar
@@ -143,10 +145,19 @@ const NoteScreen = ({ user, navigation }) => {
                onClose={()=>setModalVisible(false)}
                onSubmit = {handleOnSubmit}
            />  
-        </>
+        </SafeAreaView>
     );
 };
 const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    greet : {
+        fontSize:16,
+        fontWeight:'bold',
+        marginVertical:15,
+        color:colors.DARK
+    },
     header: {
        fontSize: 15,
        fontWeight: 'bold'

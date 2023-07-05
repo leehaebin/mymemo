@@ -1,15 +1,18 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableHighlight } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../misc/colors';
  
-const RoundIconBtn = ({ antIconName, size, color, style }) => {
-    return <AntDesign 
+const RoundIconBtn = ({ antIconName, size, color, style, onPress }) => {
+    return ( 
+            <AntDesign 
               name={antIconName} 
               size={ size || 25 } 
               color={color || colors.LIGHT} 
               style={[styles.icon, {...style}]}   
+              onPress={onPress}
            />
+    );       
 };
 const styles = StyleSheet.create({
     icon: {
